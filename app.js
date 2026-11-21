@@ -616,6 +616,7 @@ function releaseDecodeSlot(){ if(decodeQueue.length){ decodeQueue.shift()(); } e
                 video.src = getPhotoUrl(photo);
                 video.poster = photo.thumbnailUrl || '';
                 video.load();
+                video.controls = false;
                 if (muteBtn) {
                     muteBtn.classList.remove('hidden');
                     updateMuteButton();
@@ -641,6 +642,7 @@ function releaseDecodeSlot(){ if(decodeQueue.length){ decodeQueue.shift()(); } e
         function toggleLightboxZoom() {
             const media = isVideoMedia(photos[lightboxIndex]) ? document.getElementById('lbVideo') : document.getElementById('lbImage');
             const container = document.getElementById('lbImageContainer');
+            const muteBtn = document.getElementById('lbMuteBtn');
             isLightboxZoomed = !isLightboxZoomed;
             media.className = isLightboxZoomed ? 'max-w-none max-h-none cursor-zoom-out' : 'max-h-full max-w-full object-contain cursor-zoom-in';
             container.classList.toggle('items-center', !isLightboxZoomed);
@@ -650,6 +652,18 @@ function releaseDecodeSlot(){ if(decodeQueue.length){ decodeQueue.shift()(); } e
             container.classList.toggle('cursor-zoom-in', !isLightboxZoomed);
             container.classList.toggle('cursor-zoom-out', isLightboxZoomed);
             document.getElementById('btnZoomToggle').innerHTML = isLightboxZoomed ? '<span>🔎 Ajustar a pantalla</span>' : '<span>🔍 Ampliar (100%)</span>';
+            if (isVideoMedia(photos[lightboxIndex])) {
+                const video = document.getElementById('lbVideo');
+                video.controls = isLightboxZoomed;
+                if (muteBtn) {
+                    if (isLightboxZoomed) {
+                        muteBtn.classList.add('hidden');
+                    } else {
+                        muteBtn.classList.remove('hidden');
+                        updateMuteButton();
+                    }
+                }
+            }
         }
 
         function navigateLightbox(delta) {
