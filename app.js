@@ -1600,4 +1600,12 @@ function setupEventListeners() {
 setupEventListeners();
 
 if (window.IAAlert) { window.__iaAlert = window.IAAlert.mount({ container: document.querySelector("header"), before: document.getElementById("headerControls"), message: "Esta web ha sido generada con IA y no ha sido revisada por un humano.", collapseAfter: 30000, hoverCloseDelay: 5000 }); }
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+if ("serviceWorker" in navigator) {
+    // Unregister old service workers to force fresh load
+    navigator.serviceWorker.getRegistrations().then(async (registrations) => {
+        for (const registration of registrations) {
+            await registration.unregister();
+        }
+        await navigator.serviceWorker.register("sw.js").catch(() => {});
+    });
+}
