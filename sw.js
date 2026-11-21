@@ -1,4 +1,4 @@
-const CACHE_NAME = 'photoswiper-v7';
+const CACHE_NAME = 'photoswiper-v8';
 const CACHE_PREFIX = 'photoswiper-';
 const ASSETS = [
   './',
